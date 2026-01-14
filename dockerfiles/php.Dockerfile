@@ -10,8 +10,12 @@ RUN apk update && apk add --no-cache \
     $PHPIZE_DEPS \
     g++ make autoconf \
     linux-headers \          
-     # <-- ОБЯЗАТЕЛЬНО для Xdebug
-    nano
+    # <-- ОБЯЗАТЕЛЬНО для Xdebug
+    nano\
+    nodejs \            
+    # <-- Установка Node.js
+    npm                  
+# <-- Установка npm
 
 # 2. Проверка наличия ICU (для intl)
 RUN find /usr -name "*icu*" -type f -printf "ICU lib found: %h\n" || echo "ICU not found!"
@@ -21,13 +25,15 @@ RUN docker-php-ext-configure intl && \
     docker-php-ext-install intl
 
 
-# 4. Установка расширений PostgreSQL
+# 4. Установка расширений Postgre
 # ВАЖНО: libpq-dev должен быть установлен ДО этого шага!
 RUN docker-php-ext-install pdo_pgsql pgsql
 
 # Явное включение расширений в php.ini
 RUN echo "extension=pdo_pgsql.so" >> /usr/local/etc/php/conf.d/docker-php-ext-pdo_pgsql.ini
 RUN echo "extension=pgsql.so" >> /usr/local/etc/php/conf.d/docker-php-ext-pgsql.ini
+
+
 
 # 5. Установка Xdebug (опционально)
 RUN pecl install xdebug && \
