@@ -6,6 +6,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+//API scaffolding installed. Please add the [Laravel\Sanctum\HasApiTokens] trait to your User model.
+
+
 
 class User extends Authenticatable
 {

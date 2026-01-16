@@ -14,7 +14,6 @@ services:
     image: nginx:1.25-alpine
     ports:
       - "8000:80"
-      - "5173:5173"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./src:/var/www/laravel:rw
@@ -22,7 +21,20 @@ services:
       - php
     networks:
       - app-network
-
+  # docker-compose.yml
+  vite:
+    image: node:22
+    working_dir: /var/www/laravel
+    volumes:
+      - ./src:/var/www/laravel:rw
+    ports:
+      - "5173:5173"
+    command: sh -c "cd /var/www/laravel && npm install && npm run dev"
+    networks:
+      - app-network
+    depends_on:
+      - php
+    
   php:
     build:
       context: dockerfiles
