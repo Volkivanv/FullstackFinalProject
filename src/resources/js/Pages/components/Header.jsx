@@ -1,3 +1,5 @@
+import { Link } from '@inertiajs/react';
+
 export default function Header() {
     return (
         <header className="bg-gray-800 text-white py-4">
@@ -5,20 +7,16 @@ export default function Header() {
                 <h1 className="text-2xl font-bold">ChatGPT</h1>
                 <nav>
                     <ul className="flex space-x-4">
-                        <li><a href="#" className="hover:underline">Home</a></li>
-
-                        <li><a href="/about" className="hover:underline">About</a></li>
-                        <li><a href="#" className="hover:underline">Contact</a></li>
-                        <li><a href="#" className="hover:underline">Login</a></li>
-                        <li><a href="#" className="hover:underline">Register</a></li>
-
+                        <li><Link href="/" className="hover:underline transition">Home</Link></li>
+                        <li><Link href="/about" className="hover:underline transition">About</Link></li>
+                        <li><Link href="#" className="hover:underline transition">Contact</Link></li>
+                        <li><Link href="#" className="hover:underline transition">Login</Link></li>
+                        <li><Link href="#" className="hover:underline transition">Register</Link></li>
                     </ul>
                 </nav>
             </div>
-
         </header>
     );
+}
 
-
-};
 

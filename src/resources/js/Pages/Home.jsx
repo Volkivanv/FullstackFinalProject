@@ -10,7 +10,7 @@ export default function Home(props) {
 
             <Header />
             <Sidebar userName={props.name || "Гость"} />
-            <h1 className="title text-gray-700 dark:text-gray-400">Hello {props.name}</h1>
+            <h1 className="title text-gray-700 dark:text-green-400">Hello {props.name}</h1>
             <Footer />
 
         </>

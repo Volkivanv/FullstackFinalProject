@@ -10,9 +10,13 @@ Route::get('/', function () {
 });
 
 Route::get('/about', function () {
-    return inertia('About');
+    return inertia('About', [
+        'name' => 'Ivan',
+    ]);
 });
 
 Route::get('/cart', function () {
-    return inertia('Cart');
+    return inertia('Cart', [
+        'name' => 'Ivan',
+    ]);
 });
