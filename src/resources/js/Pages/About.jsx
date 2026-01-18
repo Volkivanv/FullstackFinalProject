@@ -8,7 +8,7 @@ export default function About(props) {
         <>
             <Header />
             <Sidebar userName={props.name || "Гость"} />
-            <h1 className="title text-gray-700 dark:text-gray-400">About</h1>
+            <h1 className="title">About</h1>
             <Footer />
         </>
     )

@@ -1,3 +1,5 @@
+import { Link } from "@inertiajs/react";
+
 export default function Sidebar(props) {
     return (
         <div className="sidebar">
@@ -9,6 +11,10 @@ export default function Sidebar(props) {
                     {props.userName}
 
                     </h3>
+                    <Link>Condensers</Link>
+                    <Link>Ref AirCoolers</Link>
+                    <Link>Liq AirCoolers</Link>
+                    <Link>Dry Coolers</Link>
                 </div>
             </div>
         </div>

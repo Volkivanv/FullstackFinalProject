@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers;
 
-
-
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    /**
-     * Отобразить список товаров.
-     */
     public function index()
     {
         $products = Product::all();
-        return response()->json($products);
+        return inertia('Product/Index', compact('products'));
     }
 
-    /**
-     * Создать новый товар.
-     */
+    public function create()
+    {
+        return inertia('Product/Create');
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -30,36 +27,24 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
         ]);
 
-        $product = Product::create($validated);
+        Product::create($validated);
 
-        return response()->json($product, 201);
+        return redirect()->route('products.index');
     }
 
-    /**
-     * Отобразить конкретный товар.
-     */
-    public function show($id)
+
+    public function show(Product $product)
     {
-        $product = Product::find($id);
-
-        if (!$product) {
-            return response()->json(['message' => 'Товар не найден'], 404);
-        }
-
-        return response()->json($product);
+        return inertia('Product/Show', compact('product'));
     }
 
-    /**
-     * Обновить товар.
-     */
-    public function update(Request $request, $id)
+    public function edit(Product $product)
     {
-        $product = Product::find($id);
+        return inertia('Product/Edit', compact('product'));
+    }
 
-        if (!$product) {
-            return response()->json(['message' => 'Товар не найден'], 404);
-        }
-
+    public function update(Request $request, Product $product)
+    {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'type' => 'required|string|max:255',
@@ -69,22 +54,13 @@ class ProductController extends Controller
 
         $product->update($validated);
 
-        return response()->json($product);
+        return redirect()->route('products.index');
     }
 
-    /**
-     * Удалить товар.
-     */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        $product = Product::find($id);
-
-        if (!$product) {
-            return response()->json(['message' => 'Товар не найден'], 404);
-        }
-
         $product->delete();
 
-        return response()->json(['message' => 'Товар удалён']);
+        return redirect()->route('products.index');
     }
 }
