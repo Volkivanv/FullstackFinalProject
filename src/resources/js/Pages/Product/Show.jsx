@@ -1,10 +1,10 @@
 import { Link } from '@inertiajs/react';
 import Header from '../components/Header';
+import App from '@/Layouts/App';
 
-export default function Show({ product }) {
+export default function Show({ product, auth }) {
     return (
-        <div>
-            <Header />
+        <App auth={auth}>
             <main className="max-w-screen-lg mx-auto p-6">
                 <h1 className="title">{product.name}</h1>
                 <dl className="space-y-4">
@@ -28,6 +28,6 @@ export default function Show({ product }) {
                     <Link href="/products" className="text-link">Back</Link>
                 </div>
             </main>
-        </div>
+        </App>
     );
 }

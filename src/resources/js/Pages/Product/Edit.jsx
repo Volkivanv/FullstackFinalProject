@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { Link } from '@inertiajs/react';
 import Header from '../components/Header';
+import App from '@/Layouts/App';
 
-export default function Edit({ product }) {
+export default function Edit({ product, auth }) {
     const [form, setForm] = useState({
         name: product.name,
         type: product.type,
@@ -33,8 +34,7 @@ export default function Edit({ product }) {
     };
 
     return (
-        <div>
-            <Header />
+            <App auth={auth}>
             <main className="max-w-screen-lg mx-auto p-6">
                 <h1 className="title">Edit Product</h1>
 
@@ -105,6 +105,7 @@ export default function Edit({ product }) {
                     </div>
                 </form>
             </main>
-        </div>
+            </App>
+
     );
 }
