@@ -1,10 +1,10 @@
 import { Link } from '@inertiajs/react';
-import Header from '../components/Header';
+import App from '@/Layouts/App';
 
-export default function Index({ products }) {
+export default function Index({ products, auth }) {
     return (
-        <div>
-            <Header />
+        <App auth={auth}>
+
             <main className="max-w-screen-lg mx-auto p-6">
                 <h1 className="title">Products</h1>
                 <div className="flex justify-end mb-4">
@@ -53,6 +53,6 @@ export default function Index({ products }) {
                     </tbody>
                 </table>
             </main>
-        </div>
+        </App>
     );
 }

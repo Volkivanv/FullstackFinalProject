@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { Link } from '@inertiajs/react';
 import Header from '../components/Header';
+import App from '@/Layouts/App';
 
-export default function Create() {
+export default function Create({auth}) {
     const [form, setForm] = useState({
         name: '',
         type: '',
@@ -30,8 +31,8 @@ export default function Create() {
     };
 
     return (
-        <div>
-            <Header />
+
+            <App auth={auth}>
 
             <main className="max-w-screen-lg mx-auto p-6">
                 <h1 className="title">Add New Product</h1>
@@ -96,6 +97,7 @@ export default function Create() {
                     </div>
                 </form>
             </main>
-        </div>
+            </App>
+
     );
 }
