@@ -40,6 +40,9 @@ RUN pecl install xdebug && \
     docker-php-ext-enable xdebug && \
     pecl clear-cache
 
+# Установка Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
 # 6. Очистка временных файлов
 RUN apk del $PHPIZE_DEPS g++ make autoconf && \
     rm -rf /var/cache/apk/* /tmp/pear/
