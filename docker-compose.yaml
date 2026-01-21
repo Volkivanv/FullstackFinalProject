@@ -21,6 +21,7 @@ services:
 
   vite:
     image: node:22
+    user: node
     working_dir: /var/www/laravel
     volumes:
       - ./src:/var/www/laravel:rw

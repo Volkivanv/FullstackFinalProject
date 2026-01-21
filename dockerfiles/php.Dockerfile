@@ -2,55 +2,54 @@ FROM php:8.4-fpm-alpine
 
 WORKDIR /var/www/laravel
 
-# 1. Установка системных зависимостей
+# Установка системных зависимостей
 RUN apk update && apk add --no-cache \
     icu-dev \
     libpq-dev \
     postgresql-client \
     $PHPIZE_DEPS \
-    g++ make autoconf \
-    linux-headers \          
-    # <-- ОБЯЗАТЕЛЬНО для Xdebug
-    nano\
-    nodejs \            
-    # <-- Установка Node.js
-    npm                  
-# <-- Установка npm
+    g++ \
+    make \
+    autoconf \
+    linux-headers \
+    nano
 
-# 2. Проверка наличия ICU (для intl)
-RUN find /usr -name "*icu*" -type f -printf "ICU lib found: %h\n" || echo "ICU not found!"
-
-# 3. Установка расширения intl
+# Установка расширения intl
 RUN docker-php-ext-configure intl && \
     docker-php-ext-install intl
 
-
-# 4. Установка расширений Postgre
-# ВАЖНО: libpq-dev должен быть установлен ДО этого шага!
+# Установка расширений PostgreSQL
 RUN docker-php-ext-install pdo_pgsql pgsql
 
-# Явное включение расширений в php.ini
-RUN echo "extension=pdo_pgsql.so" >> /usr/local/etc/php/conf.d/docker-php-ext-pdo_pgsql.ini
-RUN echo "extension=pgsql.so" >> /usr/local/etc/php/conf.d/docker-php-ext-pgsql.ini
+# Явное включение расширений (на всякий случай)
+RUN echo "extension=pdo_pgsql" > /usr/local/etc/php/conf.d/docker-php-ext-pdo_pgsql.ini
+RUN echo "extension=pgsql" > /usr/local/etc/php/conf.d/docker-php-ext-pgsql.ini
 
-
-
-# 5. Установка Xdebug (опционально)
+# Установка Xdebug
 RUN pecl install xdebug && \
     docker-php-ext-enable xdebug && \
     pecl clear-cache
 
+# Создаём конфиг Xdebug
+RUN mkdir -p /usr/local/etc/php/conf.d && \
+    { \
+        echo "xdebug.mode=develop,debug"; \
+        echo "xdebug.start_with_request=yes"; \
+        echo "xdebug.client_host=host.docker.internal"; \
+        echo "xdebug.discover_client_host=false"; \
+        echo "xdebug.show_error_trace=1"; \
+        echo "xdebug.log_level=0"; \
+    } > /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
 # Установка Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 6. Очистка временных файлов
-RUN apk del $PHPIZE_DEPS g++ make autoconf && \
-    rm -rf /var/cache/apk/* /tmp/pear/
+# Очистка временных файлов
+RUN apk del g++ make autoconf $PHPIZE_DEPS && \
+    rm -rf /var/cache/apk/* /tmp/pear
 
-
-# 7. Права доступа
-# RUN chown -R www-data:www-data /var/www/laravel/storage
-# RUN chmod -R 775 /var/www/laravel/storage
-
+# Права на storage (опционально, можно вручную или через entrypoint)
+# RUN chown -R www-data:www-data /var/www/laravel/storage \
+#     && chmod -R 775 /var/www/laravel/storage
 
 CMD ["php-fpm"]
