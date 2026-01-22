@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { Link } from '@inertiajs/react';
-import Header from '../components/Header';
-import App from '@/Layouts/App';
+import AppLayout from '@/Layouts/AppLayout';
 
 export default function Edit({ product, auth }) {
     const [form, setForm] = useState({
@@ -34,8 +33,8 @@ export default function Edit({ product, auth }) {
     };
 
     return (
-            <App auth={auth}>
-            <main className="max-w-screen-lg mx-auto p-6">
+            <AppLayout>
+
                 <h1 className="title">Edit Product</h1>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -104,8 +103,8 @@ export default function Edit({ product, auth }) {
                         </Link>
                     </div>
                 </form>
-            </main>
-            </App>
+
+            </AppLayout>
 
     );
 }

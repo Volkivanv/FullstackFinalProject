@@ -1,4 +1,4 @@
-import Header from "@/Pages/components/Header";
+import Header from "@/Pages/Сomponents/Header";
 
 
 export default function App({ children, auth }) {

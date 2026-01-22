@@ -1,6 +1,6 @@
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
+import Footer from "./Сomponents/Footer";
+import Header from "./Сomponents/Header";
+import Sidebar from "./Сomponents/Sidebar";
 
 export default function Cart(props) {
 

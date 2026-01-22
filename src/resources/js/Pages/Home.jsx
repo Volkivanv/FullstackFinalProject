@@ -1,8 +1,8 @@
 import "../../css/app.css";
-import Content from "./components/Content";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
+import Content from "./Сomponents/Content";
+import Footer from "./Сomponents/Footer";
+import Header from "./Сomponents/Header";
+import Sidebar from "./Сomponents/Sidebar";
 import { Children } from 'react';
 
 

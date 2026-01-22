@@ -9,17 +9,17 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
-    resolve: (name) =>
-        resolvePageComponent(
+    resolve: (name) => {
+        const page = resolvePageComponent(
             `./Pages/${name}.jsx`,
-            import.meta.glob('./Pages/**/*.jsx'),
-        ),
-    setup({ el, App, props }) {
-        if (import.meta.env.SSR) {
-            hydrateRoot(el, <App {...props} />);
-            return;
-        }
+            import.meta.glob('./Pages/**/*.jsx')
+        );
 
+        page.layout = page.layout || (({ children }) => <>{children}</>);
+
+        return page;
+    },
+    setup({ el, App, props }) {
         createRoot(el).render(<App {...props} />);
     },
     progress: {
