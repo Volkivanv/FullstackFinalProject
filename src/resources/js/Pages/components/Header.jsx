@@ -8,6 +8,7 @@ export default function Header({ auth }) {
                 <nav>
                     <ul className="flex space-x-4">
                         <li><Link href="/" className="hover:underline">Home</Link></li>
+                        <li><Link href="/products" className="hover:underline">Products</Link></li>
 
                         {auth.user ? (
                             <>

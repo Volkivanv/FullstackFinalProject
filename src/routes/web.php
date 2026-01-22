@@ -1,9 +1,13 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WelcomeController;
+use App\Models\Product;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -26,6 +30,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart', fn() => inertia('Cart/Index'))->name('cart.index');
 });
 
-Route::inertia('/', 'Welcome')->name('home');
+
+Route::get('/', WelcomeController::class)->name('home');
+
+
 
 require __DIR__.'/auth.php';
