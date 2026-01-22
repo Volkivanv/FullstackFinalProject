@@ -3,7 +3,7 @@ import { Link } from '@inertiajs/react';
 
 export default function Show({ product, auth }) {
     return (
-        <AppLayout>
+        <AppLayout auth={auth}>
             <h1 className="title">{product.name}</h1>
             <dl className="space-y-4">
                 <div>

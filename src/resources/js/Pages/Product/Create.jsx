@@ -33,7 +33,7 @@ export default function Create({auth}) {
 
     return (
 
-            <AppLayout>
+            <AppLayout auth={auth}>
 
                 <h1 className="title">Add New Product</h1>
 

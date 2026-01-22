@@ -1,26 +1,54 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import AppLayout from '@/Layouts/AppLayout';
 import { Head } from '@inertiajs/react';
 
-export default function Dashboard() {
+export default function Dashboard({ auth }) {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Dashboard
-                </h2>
-            }
-        >
-            <Head title="Dashboard" />
+        <AppLayout>
+            <Head title="Личный кабинет" />
 
             <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">
-                            You're logged in!
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div className="bg-indigo-600 px-6 py-4 text-white">
+                            <h2 className="text-2xl font-bold">Личный кабинет</h2>
+                            <p className="text-indigo-100">Добро пожаловать, {auth.user?.name || 'Пользователь'}!</p>
+                        </div>
+
+                        <div className="p-6 space-y-6">
+                            <div>
+                                <h3 className="text-lg font-semibold text-gray-800">Информация о профиле</h3>
+                                <div className="mt-3 bg-gray-50 rounded-lg p-4">
+                                    <p><strong>Email:</strong> {auth.user?.email}</p>
+                                    <p><strong>Аккаунт создан:</strong> {new Date(auth.user?.created_at || '').toLocaleDateString('ru-RU')}</p>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col sm:flex-row gap-4">
+                                <a
+                                    href="/products"
+                                    className="flex-1 px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg text-center hover:bg-indigo-700 transition"
+                                >
+                                    Перейти в каталог
+                                </a>
+                                <form
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                        Inertia.post('/logout');
+                                    }}
+                                    className="flex-1"
+                                >
+                                    <button
+                                        type="submit"
+                                        className="w-full px-6 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition"
+                                    >
+                                        Выйти из аккаунта
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </AppLayout>
     );
 }

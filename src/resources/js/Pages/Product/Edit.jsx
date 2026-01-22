@@ -33,7 +33,7 @@ export default function Edit({ product, auth }) {
     };
 
     return (
-            <AppLayout>
+            <AppLayout auth={auth}>
 
                 <h1 className="title">Edit Product</h1>
 

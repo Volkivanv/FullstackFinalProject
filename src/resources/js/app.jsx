@@ -15,7 +15,9 @@ createInertiaApp({
             import.meta.glob('./Pages/**/*.jsx')
         );
 
-        page.layout = page.layout || (({ children }) => <>{children}</>);
+        if (!page.layout) {
+            page.layout = (page) => <AppLayout>{page.children}</AppLayout>;
+        }
 
         return page;
     },

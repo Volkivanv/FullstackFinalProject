@@ -5,7 +5,7 @@ import { Link } from '@inertiajs/react';
 
 export default function Welcome({ auth, products }) {
     return (
-        <AppLayout>
+        <AppLayout auth={auth}>
 
                 {/* Заголовок */}
                 <div className="mb-8 text-center">
