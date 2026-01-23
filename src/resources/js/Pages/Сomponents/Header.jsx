@@ -22,6 +22,7 @@ export default function Header({ onMenuClick }) {
         <nav className="hidden lg:flex space-x-8">
           <Link href="/" className="text-gray-700 hover:text-indigo-600">Главная</Link>
           <Link href="/products" className="text-gray-700 hover:text-indigo-600">Каталог</Link>
+          <Link href="/about" className="text-gray-700 hover:text-indigo-600">О нас</Link>
         </nav>
       </div>
     </header>

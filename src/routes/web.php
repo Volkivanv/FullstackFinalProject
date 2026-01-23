@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('products', \App\Http\Controllers\ProductController::class);
     Route::get('/cart', fn() => inertia('Cart'))->name('cart.index');
+    Route::get('/about', fn() => inertia('About'))->name('about.index');
 });
 
 

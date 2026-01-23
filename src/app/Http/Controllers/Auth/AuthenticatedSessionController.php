@@ -14,7 +14,7 @@ use Inertia\Response;
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Display the login view.
+     * Показать форму входа.
      */
     public function create(): Response
     {
@@ -25,26 +25,39 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Handle an incoming authentication request.
+     * Обработка входа пользователя.
      */
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = Auth::user();
+
+        // Подгружаем корзину из БД
+        $cart = $user->cart ?? [];
+
+        return redirect()
+            ->intended(route('dashboard', absolute: false))
+            ->with('cart', $cart); // Передаём в сессию, чтобы использовать при инициализации
     }
 
     /**
-     * Destroy an authenticated session.
+     * Выход из аккаунта.
+     * Сохраняет корзину из frontend-запроса в БД.
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $cart = $request->input('cart');
+
+        if ($cart !== null && Auth::check() && is_array($cart)) {
+            $user = Auth::user();
+            $user->update(['cart' => $cart]);
+        }
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect('/');

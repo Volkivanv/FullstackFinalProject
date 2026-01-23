@@ -2,12 +2,12 @@ import AppLayout from '@/Layouts/AppLayout';
 import { Head, Link } from '@inertiajs/react';
 import { useCart } from '@/Hooks/useCart';
 
-export default function Cart() {
+export default function Cart({ auth }) {
     const { items, total, totalItems, updateQuantity, removeFromCart } = useCart();
 
     if (items.length === 0) {
         return (
-            <AppLayout>
+            <AppLayout auth={auth}>
                 <Head title="Корзина" />
                 <div className="py-12">
                     <div className="max-w-3xl mx-auto text-center">

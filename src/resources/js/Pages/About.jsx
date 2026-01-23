@@ -1,9 +1,9 @@
 import AppLayout from '@/Layouts/AppLayout';
 import { Head } from '@inertiajs/react';
 
-export default function About() {
+export default function About({ auth }) {
     return (
-        <AppLayout>
+        <AppLayout auth={auth}>
             <Head title="О нас" />
 
             <div className="py-12">

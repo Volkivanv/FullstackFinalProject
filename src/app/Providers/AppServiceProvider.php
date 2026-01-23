@@ -9,6 +9,7 @@ use Inertia\Inertia;
 
 
 
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -26,7 +27,13 @@ class AppServiceProvider extends ServiceProvider
     {
         Vite::prefetch(concurrency: 3);
         Inertia::share('auth.user', function () {
-        return Auth::check() ? Auth::user() : null;
-    });
+            if (auth()->check()) {
+                return array_merge(
+                    auth()->user()->toArray(),
+                    ['cart' => auth()->user()->cart ?? []]
+                );
+            }
+            return null;
+        });
     }
 }

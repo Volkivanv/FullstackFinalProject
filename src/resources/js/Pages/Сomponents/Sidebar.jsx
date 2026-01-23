@@ -1,8 +1,18 @@
-// resources/js/Components/Sidebar.jsx
-import { Link, router } from '@inertiajs/react';  // ✅ Добавлен router (или Inertia)
+import { Link, router } from '@inertiajs/react';
+import { useCart } from '@/Hooks/useCart';
 
+export default function Sidebar({ onClose, auth }) {
+    const { items } = useCart(); // ✅ Получаем корзину
 
-export default function Sidebar({ onClose, auth, totalItems }) {
+    const handleLogout = (e) => {
+        e.preventDefault();
+        router.post('/logout', {
+            data: { cart: items },  // ✅ Отправляем корзину
+            onFinish: () => {
+              //  localStorage.removeItem('cart'); // Опционально
+            }
+        });
+    };
 
     return (
         <aside className="w-64 bg-indigo-800 text-white h-full fixed inset-y-0 left-0 z-30 shadow-lg">
@@ -45,7 +55,7 @@ export default function Sidebar({ onClose, auth, totalItems }) {
                             onClick={onClose}
                             className="flex items-center px-6 py-3 text-gray-200 hover:bg-indigo-700 rounded-l-lg transition"
                         >
-                            🛒 Каталог
+                            🛍️ Каталог
                         </Link>
                     </li>
                     <li>
@@ -55,24 +65,12 @@ export default function Sidebar({ onClose, auth, totalItems }) {
                             className="flex items-center px-6 py-3 text-gray-200 hover:bg-indigo-700 rounded-l-lg transition"
                         >
                             🛒 Корзина
-                            {totalItems > 0 && (
-                                <span className="ml-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                                    {totalItems}
-                                </span>
-                            )}
                         </Link>
                     </li>
 
-
-                    {/* Условная кнопка: Вход или Выход */}
                     {auth?.user ? (
                         <li>
-                            <form
-                                onSubmit={(e) => {
-                                    e.preventDefault();
-                                    router.post('/logout');  // ✅ Используем router
-                                }}
-                            >
+                            <form onSubmit={handleLogout}>
                                 <button
                                     type="submit"
                                     className="w-full text-left flex items-center px-6 py-3 text-gray-200 hover:bg-red-600 rounded-l-lg transition"
