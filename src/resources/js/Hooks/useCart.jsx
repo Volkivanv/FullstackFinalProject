@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 
 export function useCart() {
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState(
+        JSON.parse(localStorage.getItem('cart')) || []
+    );
     const [changePage, setChangePage] = useState(false);
 
     // 🔹 Загружаем из localStorage ТОЛЬКО при монтировании
@@ -32,7 +34,8 @@ export function useCart() {
     }, [items]);
 
     const addToCart = (product) => {
-        setItems((prev) => {
+        setItems(() => {
+            const prev = JSON.parse(localStorage.getItem('cart')) || [];
             const existing = prev.find(item => item.id === product.id);
             if (existing) {
                 return prev.map(item =>
@@ -41,6 +44,7 @@ export function useCart() {
             }
             return [...prev, { ...product, quantity: 1 }];
         });
+        console.log('addToCart', items);
     };
 
     const updateQuantity = (id, quantity) => {
