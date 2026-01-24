@@ -48,11 +48,20 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        // ✅ Получаем корзину из запроса
         $cart = $request->input('cart');
 
-        if ($cart !== null && Auth::check() && is_array($cart)) {
-            $user = Auth::user();
-            $user->update(['cart' => $cart]);
+        if ($cart !== null && Auth::check()) {
+            try {
+                // ✅ Убедимся, что $cart — массив
+                if (is_array($cart)) {
+                    $user = Auth::user();
+                    $user->update(['cart' => $cart]);
+                    \Log::info('Корзина сохранена в БД', ['user_id' => $user->id, 'cart' => $cart]);
+                }
+            } catch (\Exception $e) {
+                \Log::error('Ошибка сохранения корзины', ['error' => $e->getMessage()]);
+            }
         }
 
         Auth::guard('web')->logout();

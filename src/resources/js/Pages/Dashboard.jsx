@@ -1,9 +1,23 @@
+import { useCart } from '@/Hooks/useCart';
 import AppLayout from '@/Layouts/AppLayout';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 
 export default function Dashboard({ auth }) {
+    const { items } = useCart(); // ✅ Получаем корзину
+
+    const handleLogout = (e) => {
+        e.preventDefault();
+        console.log(items);
+        router.post('/logout', {
+
+            data: { cart: items },  // ✅ Отправляем корзину
+            onFinish: () => {
+                //  localStorage.removeItem('cart'); // Опционально
+            }
+        });
+    };
     return (
-        <AppLayout>
+        <AppLayout auth={auth}>
             <Head title="Личный кабинет" />
 
             <div className="py-12">
@@ -31,10 +45,7 @@ export default function Dashboard({ auth }) {
                                     Перейти в каталог
                                 </a>
                                 <form
-                                    onSubmit={(e) => {
-                                        e.preventDefault();
-                                        Inertia.post('/logout');
-                                    }}
+                                    onSubmit={handleLogout}
                                     className="flex-1"
                                 >
                                     <button

@@ -26,7 +26,7 @@ export default function Cart({ auth }) {
     }
 
     return (
-        <AppLayout>
+        <AppLayout auth={auth}>
             <Head title="Корзина" />
 
             <div className="py-12">

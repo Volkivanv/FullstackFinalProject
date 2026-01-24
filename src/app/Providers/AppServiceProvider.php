@@ -26,13 +26,17 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Vite::prefetch(concurrency: 3);
+
         Inertia::share('auth.user', function () {
-            if (auth()->check()) {
-                return array_merge(
-                    auth()->user()->toArray(),
-                    ['cart' => auth()->user()->cart ?? []]
-                );
+
+            $user = Auth::user();
+
+            if ($user) {
+                return array_merge($user->toArray(), [
+                    'cart' => $user->cart ?? []
+                ]);
             }
+
             return null;
         });
     }

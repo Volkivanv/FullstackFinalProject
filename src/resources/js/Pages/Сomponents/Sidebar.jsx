@@ -6,7 +6,9 @@ export default function Sidebar({ onClose, auth }) {
 
     const handleLogout = (e) => {
         e.preventDefault();
+        console.log('отправляем',items);
         router.post('/logout', {
+
             data: { cart: items },  // ✅ Отправляем корзину
             onFinish: () => {
               //  localStorage.removeItem('cart'); // Опционально
@@ -74,7 +76,7 @@ export default function Sidebar({ onClose, auth }) {
                                 <button
                                     type="submit"
                                     className="w-full text-left flex items-center px-6 py-3 text-gray-200 hover:bg-red-600 rounded-l-lg transition"
-                                    onClick={onClose}
+                                    // onClick={onClose}
                                 >
                                     🔴 Выход
                                 </button>
