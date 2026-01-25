@@ -9,8 +9,43 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
-        return inertia('Product/Index', compact('products'));
+        // $products = Product::all();
+        // return inertia('Product/Index', compact('products'));
+        $query = Product::query();
+
+        // 🔍 Поиск по названию и описанию
+        if (request('search')) {
+            $search = request('search');
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+        }
+
+        // 🧩 Фильтр по типу
+        if (request('type')) {
+            $query->where('type', request('type'));
+        }
+
+        // 💰 Фильтр по цене (от)
+        if (request('price_from')) {
+            $query->where('price', '>=', request('price_from'));
+        }
+
+        // 💰 Фильтр по цене (до)
+        if (request('price_to')) {
+            $query->where('price', '<=', request('price_to'));
+        }
+
+        $products = $query->paginate(12)->withQueryString();
+
+        return inertia(
+            'Product/Index',
+            [
+                'products' => $products,
+                'filters' => request()->only(
+                    ['search', 'type', 'price_from', 'price_to']
+                ),
+            ]
+        );
     }
 
     public function create()

@@ -1,6 +1,6 @@
 import AppLayout from '@/Layouts/AppLayout';
 import { Link } from '@inertiajs/react';
-import ProductCard from './Сomponents/ProductCard';
+import ProductCard from './Product/Partials/ProductCard';
 
 
 

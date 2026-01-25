@@ -2,21 +2,15 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
-use App\Models\Product;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\ProductController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
 use Inertia\Inertia;
 
-
-
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+// ✅ Один маршрут / через контроллер
+Route::get('/', WelcomeController::class)->name('home');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -26,14 +20,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('products', \App\Http\Controllers\ProductController::class);
+
+    // ✅ Ресурсный маршрут для продуктов
+    Route::resource('products', ProductController::class);
+
     Route::get('/cart', fn() => inertia('Cart'))->name('cart.index');
     Route::get('/about', fn() => inertia('About'))->name('about.index');
 });
 
-
-Route::get('/', WelcomeController::class)->name('home');
-
+// ✅ API: сохранение корзины при закрытии вкладки
 Route::post('/api/cart/save', function (Request $request) {
     if (Auth::check()) {
         $cart = $request->input('cart');
@@ -45,8 +40,7 @@ Route::post('/api/cart/save', function (Request $request) {
     }
 
     return response()->json(['success' => false], 401);
-})->middleware('auth')->withoutCsrfProtection(); // ⚠️ Без CSRF — иначе не пройдёт
+})->middleware('auth')->withoutCsrfProtection();
 
-
-
+// Загрузка маршрутов аутентификации
 require __DIR__ . '/auth.php';
