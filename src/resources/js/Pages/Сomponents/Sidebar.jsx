@@ -124,7 +124,7 @@ export default function Sidebar({ onClose, auth }) {
                             <form onSubmit={handleLogout}>
                                 <button
                                     type="submit"
-                                    className="w-full text-left flex items-center px-6 py-3 text-gray-200 hover:bg-red-600 rounded-l-lg transition"
+                                    className="w-full text-left flex items-center px-6 py-3 text-gray-200 hover:bg-red-600 rounded-l-lg rounded-l-lg transition"
                                 // onClick={onClose}
                                 >
                                     🔴 Выход
@@ -136,14 +136,14 @@ export default function Sidebar({ onClose, auth }) {
                             <Link
                                 href="/login"
                                 onClick={onClose}
-                                className="flex items-center px-6 py-3 text-gray-200 bg-green-600 hover:bg-green-700 rounded-l-lg transition"
+                                className="flex items-center px-6 py-3 text-gray-200 bg-green-600 hover:bg-green-700 rounded-l-lg rounded-r-lg transition"
                             >
                                 ✅ Войти
                             </Link>
                             <Link
                                 href="/register"
                                 onClick={onClose}
-                                className="flex items-center px-6 py-3 text-gray-200 bg-blue-600 hover:bg-blue-700 rounded-l-lg transition"
+                                className="flex items-center px-6 py-3 text-gray-200 bg-blue-600 hover:bg-blue-700 rounded-l-lg rounded-r-lg transition"
                             >
                                 📝 Зарегистрироваться
                             </Link>

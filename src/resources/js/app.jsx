@@ -44,6 +44,48 @@ createInertiaApp({
             console.log('Not user!!!');
         }
 
+        // ✅ Добавляем: сохранение при закрытии вкладки
+        if (user) {
+            const handleBeforeUnload = () => {
+                const cart = localStorage.getItem('cart');
+                if (cart) {
+                    try {
+                        const cartData = JSON.parse(cart);
+
+                        // Используем navigator.sendBeacon или fetch
+                        if (navigator.sendBeacon) {
+                            // sendBeacon — надёжнее, работает даже после закрытия
+                            const blob = new Blob([JSON.stringify({ cart: cartData })], {
+                                type: 'application/json',
+                            });
+                            navigator.sendBeacon('/api/cart/save', blob);
+                        } else {
+                            // Fallback на fetch с keepalive
+                            fetch('/api/cart/save', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    // Не отправляем XSRF — без CSRF protection
+                                },
+                                body: JSON.stringify({ cart: cartData }),
+                                keepalive: true, // 🔥 Критически важно
+                            });
+                        }
+                    } catch (e) {
+                        console.error('❌ Не удалось отправить корзину при закрытии', e);
+                    }
+                }
+            };
+
+            // Добавляем обработчик
+            window.addEventListener('beforeunload', handleBeforeUnload);
+
+            // Очищаем при unmount (на случай HMR)
+            // return () => {
+            //     window.removeEventListener('beforeunload', handleBeforeUnload);
+            // };
+        }
+
         const root = createRoot(el);
 
         root.render(
@@ -77,6 +119,13 @@ createInertiaApp({
                 />
             </>
         );
+        // ✅ Если нужно — очистка (но редко нужна)
+        return () => {
+            if (user) {
+                window.removeEventListener('beforeunload', handleBeforeUnload);
+            }
+            root.unmount();
+        };
     },
     progress: {
         color: '#4B5563',

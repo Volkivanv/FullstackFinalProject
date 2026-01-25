@@ -34,6 +34,19 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/', WelcomeController::class)->name('home');
 
+Route::post('/api/cart/save', function (Request $request) {
+    if (Auth::check()) {
+        $cart = $request->input('cart');
+
+        if (is_array($cart)) {
+            Auth::user()->update(['cart' => $cart]);
+            return response()->json(['success' => true]);
+        }
+    }
+
+    return response()->json(['success' => false], 401);
+})->middleware('auth')->withoutCsrfProtection(); // ⚠️ Без CSRF — иначе не пройдёт
 
 
-require __DIR__.'/auth.php';
+
+require __DIR__ . '/auth.php';
