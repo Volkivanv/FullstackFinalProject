@@ -9,8 +9,8 @@
   },
   "devDependencies": {
     "@headlessui/react": "^2.0.0",
-    "@inertiajs/react": "^2.3.8",
     "@inertiajs/inertia": "^0.11.1",
+    "@inertiajs/react": "^2.3.8",
     "@tailwindcss/forms": "^0.5.3",
     "@vitejs/plugin-react": "^5.1.2",
     "autoprefixer": "^10.4.19",
@@ -23,5 +23,7 @@
     "tailwindcss": "^3.4.3",
     "vite": "^7.3.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "react-hot-toast": "^2.6.0"
+  }
 }

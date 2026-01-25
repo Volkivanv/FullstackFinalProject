@@ -1,5 +1,6 @@
 import { Link, router } from '@inertiajs/react';
 import { useCart } from '@/Hooks/useCart';
+import toast from 'react-hot-toast';
 
 export default function Sidebar({ onClose, auth }) {
     const { items } = useCart(); // ✅ Получаем корзину
@@ -11,6 +12,7 @@ export default function Sidebar({ onClose, auth }) {
 
             data: { cart: items },  // ✅ Отправляем корзину
             onFinish: () => {
+                toast.success(`До свидания, ${auth.user.name}!`);
               //  localStorage.removeItem('cart'); // Опционально
             }
         });

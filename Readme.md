@@ -29,5 +29,15 @@ docker-compose run --rm vite npm install
 docker-compose run --rm vite npm run build
 
 
+# Интернет-магазин "Middle Market"
+
+## 🚀 Запуск проекта
+
+1. Склонируйте репозиторий:
+   ```bash
+   git clone https://github.com/Volkivanv/FullstackFinalProject.git
+   cd middle
+
+
 # RUN chmod 777 -R storage/
 # RUN chmod 777 -R database/

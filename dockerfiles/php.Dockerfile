@@ -44,12 +44,13 @@ RUN mkdir -p /usr/local/etc/php/conf.d && \
 # Установка Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Копируем скрипт запуска
+COPY php/start.sh /start.sh
+RUN chmod +x /start.sh
+
 # Очистка временных файлов
 RUN apk del g++ make autoconf $PHPIZE_DEPS && \
     rm -rf /var/cache/apk/* /tmp/pear
 
-# Права на storage (опционально, можно вручную или через entrypoint)
-# RUN chown -R www-data:www-data /var/www/laravel/storage \
-#     && chmod -R 775 /var/www/laravel/storage
-
-CMD ["php-fpm"]
+# Запускаем скрипт
+CMD ["/start.sh"]

@@ -1,6 +1,8 @@
 import { useCart } from '@/Hooks/useCart';
 import AppLayout from '@/Layouts/AppLayout';
 import { Head, router } from '@inertiajs/react';
+import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 export default function Dashboard({ auth }) {
     const { items } = useCart(); // ✅ Получаем корзину
@@ -16,6 +18,14 @@ export default function Dashboard({ auth }) {
             }
         });
     };
+
+    useEffect(() => {
+        if (auth?.user) {
+            toast.success(`Добро пожаловать, ${auth.user.name}!`);
+        }
+    }, [auth]);
+
+
     return (
         <AppLayout auth={auth}>
             <Head title="Личный кабинет" />
