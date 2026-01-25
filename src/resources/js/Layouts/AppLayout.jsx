@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { useCart } from '@/Hooks/useCart';  // ✅
 import Sidebar from '@/Pages/Сomponents/Sidebar';
 import Header from '@/Pages/Сomponents/Header';
+import { useSyncCartFromAuth } from '@/Hooks/useSyncCartFromAuth';
 
 
 export default function AppLayout({ children, auth }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const { totalItems } = useCart(); // ✅ Теперь можно передать
+    useSyncCartFromAuth(); // ✅ Синхронизация при каждом обновлении auth
 
     return (
         <div className="flex min-h-screen bg-gray-100">

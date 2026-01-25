@@ -49,7 +49,8 @@ export function useCart() {
     // };
 
     const addToCart = (product) => {
-        setItems((prev) => {
+        setItems(() => {
+            const prev = JSON.parse(localStorage.getItem('cart')) || [];
             const existing = prev.find(item => item.id === product.id);
             if (existing) {
                 const updated = prev.map(item =>

@@ -40,6 +40,8 @@ createInertiaApp({
             } else {
                 console.log('📦 Корзина из localStorage сохранена', JSON.parse(savedCart));
             }
+        } else {
+            console.log('Not user!!!');
         }
 
         const root = createRoot(el);

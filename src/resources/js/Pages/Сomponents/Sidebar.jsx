@@ -5,18 +5,65 @@ import toast from 'react-hot-toast';
 export default function Sidebar({ onClose, auth }) {
     const { items } = useCart(); // ✅ Получаем корзину
 
+    // const handleLogout = (e) => {
+    //     e.preventDefault();
+    //     console.log('📤 Отправка корзины:', items); // 🔥 Добавьте отладку
+    //     router.post('/logout', {
+    //         method: 'post',
+    //         cart: items,
+    //         // forceFormData: true, // ⚠️ Если не передаётся — попробуйте это
+    //         onSuccess: () => {
+    //             console.log('✅ Отправлено');
+    //             localStorage.removeItem('cart');
+    //             console.log('🗑 localStorage.cart удалён');
+    //             toast.success(`До свидания, ${auth.user.name}!`);
+    //         },
+    //         onError: (error) => {
+    //             console.error('❌ Ошибка:', error);
+    //             localStorage.removeItem('cart'); // на всякий случай
+    //         },
+
+    //     });
+    // };
+
+    // const handleLogout = async (e) => {
+    //     e.preventDefault();
+
+    //     try {
+    //         // Отправляем без редиректа
+    //         await router.visit('/logout', {
+    //             method: 'post',
+    //             data: { cart: items },
+    //             preserveState: false,
+    //             replace: true,
+    //         });
+
+    //         // Теперь можно очистить и показать toast
+    //         localStorage.removeItem('cart');
+    //         toast.success(`До свидания, ${auth.user.name}!`);
+
+    //         // Ручной редирект
+    //         window.location.href = '/';
+    //     } catch (error) {
+    //         console.error('Ошибка выхода', error);
+    //         localStorage.removeItem('cart');
+    //     }
+    // };
+
     const handleLogout = (e) => {
         e.preventDefault();
-        console.log('отправляем',items);
-        router.post('/logout', {
+        console.log('📤 Отправка корзины:', items);
 
-            data: { cart: items },  // ✅ Отправляем корзину
-            onFinish: () => {
-                toast.success(`До свидания, ${auth.user.name}!`);
-              //  localStorage.removeItem('cart'); // Опционально
-            }
+        // ✅ Главное — удалить до отправки
+        localStorage.removeItem('cart');
+        console.log('🗑 localStorage.cart удалён');
+
+        // Отправляем и переходим
+        router.post('/logout', {
+            cart: items
         });
     };
+
 
     return (
         <aside className="w-64 bg-indigo-800 text-white h-full fixed inset-y-0 left-0 z-30 shadow-lg">
@@ -78,7 +125,7 @@ export default function Sidebar({ onClose, auth }) {
                                 <button
                                     type="submit"
                                     className="w-full text-left flex items-center px-6 py-3 text-gray-200 hover:bg-red-600 rounded-l-lg transition"
-                                    // onClick={onClose}
+                                // onClick={onClose}
                                 >
                                     🔴 Выход
                                 </button>

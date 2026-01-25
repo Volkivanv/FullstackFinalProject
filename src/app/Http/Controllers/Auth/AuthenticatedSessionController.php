@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -32,10 +33,11 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
-        $user = Auth::user();
+        // $user = Auth::user();
 
-        // Подгружаем корзину из БД
-        $cart = $user->cart ?? [];
+        // // Подгружаем корзину из БД
+        // $cart = $user->cart ?? [];
+        $cart = $request->input('cart'); // ✅ Теперь = массив
 
         return redirect()
             ->intended(route('dashboard', absolute: false))
@@ -48,19 +50,28 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        // ✅ Получаем корзину из запроса
+        // 🔥 Логируем весь запрос
+        Log::info('Logout request', [
+            'user_id' => Auth::id(),
+            'cart_data' => $request->input('cart'),
+            'has_cart' => $request->has('cart'),
+            'all_input' => $request->all(),
+        ]);
+
         $cart = $request->input('cart');
 
         if ($cart !== null && Auth::check()) {
             try {
-                // ✅ Убедимся, что $cart — массив
                 if (is_array($cart)) {
                     $user = Auth::user();
                     $user->update(['cart' => $cart]);
-                    \Log::info('Корзина сохранена в БД', ['user_id' => $user->id, 'cart' => $cart]);
+                    Log::info('Корзина сохранена в БД', ['user_id' => $user->id, 'count' => count($cart)]);
                 }
             } catch (\Exception $e) {
-                \Log::error('Ошибка сохранения корзины', ['error' => $e->getMessage()]);
+                Log::error('Ошибка сохранения корзины', [
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]);
             }
         }
 
