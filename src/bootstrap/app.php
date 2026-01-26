@@ -21,6 +21,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             HandleInertiaRequests::class,
         ]);
+
+        $middleware->validateCsrfTokens(except: [
+            'api/cart/save', // ✅ Ваш маршрут
+            'api/*',         // 🆕 Все API-пути
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

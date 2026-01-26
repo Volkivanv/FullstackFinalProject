@@ -40,7 +40,7 @@ Route::post('/api/cart/save', function (Request $request) {
     }
 
     return response()->json(['success' => false], 401);
-})->middleware('auth')->withoutCsrfProtection();
+})->middleware('auth');
 
 // Загрузка маршрутов аутентификации
 require __DIR__ . '/auth.php';
