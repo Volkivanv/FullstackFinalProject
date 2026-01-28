@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Vite::prefetch(concurrency: 3);
 
-        Inertia::share('productTypes', fn () => Product::pluck('type')->unique()->sort()->values());
+        Inertia::share('productTypes', fn() => Product::pluck('type')->unique()->sort()->values());
 
         Inertia::share('auth.user', function () {
 
@@ -36,7 +36,10 @@ class AppServiceProvider extends ServiceProvider
 
             if ($user) {
                 return array_merge($user->toArray(), [
-                    'cart' => $user->cart ?? []
+                    'cart' => $user->cart ?? [],
+                    'role_name' => $user->role?->name,
+                    'can_manage_products' => $user->canManageProducts(),
+                    'can_assign_roles' => $user->canAssignRoles(),
                 ]);
             }
 

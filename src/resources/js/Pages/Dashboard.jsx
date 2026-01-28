@@ -43,6 +43,7 @@ export default function Dashboard({ auth }) {
                                 <h3 className="text-lg font-semibold text-gray-800">Информация о профиле</h3>
                                 <div className="mt-3 bg-gray-50 rounded-lg p-4">
                                     <p><strong>Email:</strong> {auth.user?.email}</p>
+                                    <p><strong>Роль:</strong> {auth.user?.role_id}</p>
                                     <p><strong>Аккаунт создан:</strong> {new Date(auth.user?.created_at || '').toLocaleDateString('ru-RU')}</p>
                                 </div>
                             </div>

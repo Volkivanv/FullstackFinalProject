@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Role;
 //API scaffolding installed. Please add the [Laravel\Sanctum\HasApiTokens] trait to your User model.
 
 
@@ -39,42 +40,57 @@ use Illuminate\Notifications\Notifiable;
  */
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
-        'cart',  // ✅ Разрешаем массовое присвоение
+        'cart',
+        'role_id',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'cart' => 'array',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    // 🔗 Связь с ролью
+    public function role()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'cart' => 'array',  // ✅ Автоматически преобразует JSON ↔ array
-        ];
+        return $this->belongsTo(Role::class);
+    }
+
+    // 🔐 Проверка по имени роли
+    public function hasRole($roleName): bool
+    {
+        return $this->role?->name === $roleName;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('admin');
+
+    }
+
+    public function isEmployee(): bool
+    {
+        return $this->hasRole('employee');
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->hasRole('customer');
+    }
+
+    public function canManageProducts(): bool
+    {
+        return $this->isAdmin() || $this->isEmployee();
+    }
+
+    public function canAssignRoles(): bool
+    {
+        return $this->isAdmin();
     }
 }

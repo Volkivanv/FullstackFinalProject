@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserRoleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\ProductController;
@@ -17,6 +18,8 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// ...
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -30,7 +33,18 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/products/{product}/reviews', [ReviewController::class, 'store']);
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+
+    Route::get('/admin/users', [UserRoleController::class, 'index'])->name('admin.users.index')->middleware('can:access-admin');
+    Route::put('/admin/users/{user}', [UserRoleController::class, 'update'])->name('admin.users.update')->middleware('can:access-admin');
 });
+
+// // ✅ Группа для админки — только для тех, кто может назначать роли
+// Route::middleware(['auth', 'verified'])->group(function () {
+//     Route::get('/admin/users', [UserRoleController::class, 'index'])->name('admin.users.index');
+//     Route::put('/admin/users/{user}', [UserRoleController::class, 'update'])->name('admin.users.update');
+// })->can('access-admin');
+
+
 
 // ✅ API: сохранение корзины при закрытии вкладки
 Route::post('/api/cart/save', function (Request $request) {
@@ -45,7 +59,6 @@ Route::post('/api/cart/save', function (Request $request) {
 
     return response()->json(['success' => false], 401);
 })->middleware('auth');
-
 
 
 // Загрузка маршрутов аутентификации
