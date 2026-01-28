@@ -35,22 +35,23 @@ services:
       - "5173:5173"
     command: >
       sh -c "cd /var/www/laravel &&
-             npm install &&
-             npm run dev"
+        npm install &&
+        npm run dev"
     networks:
       - app-network
     depends_on:
       - php
     restart: unless-stopped
 
-  # ⚙️ PHP-FPM + CLI
+# ⚙️ PHP-FPM + CLI
   php:
     build:
       context: dockerfiles
       dockerfile: php.Dockerfile
     volumes:
       - ./src:/var/www/laravel:rw
-      - ./src/storage:/var/www/laravel/storage:rw  # Для кэша Blade, сессий и логов
+      - ./src/storage:/var/www/laravel/storage:rw  # ✅ Обязательно!
+      - ./src/bootstrap/cache:/var/www/laravel/bootstrap/cache:rw  # Опционально
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
@@ -62,12 +63,12 @@ services:
     networks:
       - app-network
     restart: unless-stopped
-    healthcheck:  # ✅ Проверяет, что PHP-FPM работает
+    healthcheck:
       test: ["CMD-SHELL", "pgrep php-fpm || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 6
-      start_period: 15s  # Даёт время на создание папок storage
+      start_period: 30s
 
   # 🗄️ PostgreSQL
   pgsql:
@@ -96,8 +97,8 @@ services:
   composer:
     image: composer:latest
     volumes:
-      - ./src:/app:rw
-    working_dir: /app
+      - ./src:/var/www/laravel:rw
+    working_dir: /var/www/laravel
     command: composer install
     networks:
       - app-network

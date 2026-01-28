@@ -1,0 +1,35 @@
+# Node.js
+node_modules
+npm-debug.log
+package-lock.json
+yarn.lock
+.pnpm-lock.yaml
+
+# Laravel
+.env.local
+.env.testing
+.env.example
+storage/*.log
+public/storage
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+Thumbs.db
+
+# Composer
+/composer.phar
+
+# Docker
+/docker-compose.yaml
+/dockerfiles
+
+# Не копируем storage в образ
+/src/storage

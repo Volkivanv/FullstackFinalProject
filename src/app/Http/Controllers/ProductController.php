@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Review;
 
 class ProductController extends Controller
 {
@@ -70,7 +71,15 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        return inertia('Product/Show', compact('product'));
+        $product->loadCount('reviews');
+        $reviews = $product->reviews()->with('user:id,name')->paginate(5);
+
+        return inertia('Product/Show', [
+            'product' => $product->append('average_rating'),
+            'reviews' => $reviews,
+            'canAddReview' => auth()->check() &&
+                !$product->reviews()->where('user_id', auth()->id())->exists(),
+        ]);
     }
 
     public function edit(Product $product)

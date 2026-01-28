@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/cart', fn() => inertia('Cart'))->name('cart.index');
     Route::get('/about', fn() => inertia('About'))->name('about.index');
+
+    Route::post('/products/{product}/reviews', [ReviewController::class, 'store']);
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 });
 
 // ✅ API: сохранение корзины при закрытии вкладки
@@ -41,6 +45,8 @@ Route::post('/api/cart/save', function (Request $request) {
 
     return response()->json(['success' => false], 401);
 })->middleware('auth');
+
+
 
 // Загрузка маршрутов аутентификации
 require __DIR__ . '/auth.php';

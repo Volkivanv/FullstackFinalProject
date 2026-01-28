@@ -45,7 +45,7 @@ RUN mkdir -p /usr/local/etc/php/conf.d && \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Копируем скрипт запуска
-COPY php/start.sh /start.sh
+COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
 # Очистка временных файлов

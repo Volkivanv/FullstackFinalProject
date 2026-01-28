@@ -32,4 +32,19 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'price', 'description', 'type'];
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class)->latest();
+    }
+
+    public function averageRating()
+    {
+        return $this->reviews()->avg('rating') ?? 0;
+    }
+
+    public function getAverageRatingAttribute()
+    {
+        return round($this->averageRating(), 1);
+    }
 }
