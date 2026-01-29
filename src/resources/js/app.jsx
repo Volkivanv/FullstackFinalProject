@@ -9,7 +9,7 @@ import toast, { ToastBar, Toaster } from 'react-hot-toast'; // ✅ Импорт�
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => `Middle-Market`,
     resolve: (name) => {
         const page = resolvePageComponent(
             `./Pages/${name}.jsx`,

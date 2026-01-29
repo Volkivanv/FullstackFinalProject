@@ -1,43 +1,87 @@
-Для запуска
+# Middle-Market — Интернет-магазин на Laravel 12 + React + Inertia.js
 
-# Интернет-магазин "Middle Market"
+![Laravel](https://img.shields.io/badge/Laravel-12.x-orange)
+![React](https://img.shields.io/badge/React-18-blue)
+![Inertia.js](https://img.shields.io/badge/Inertia.js-v1-green)
+![Docker](https://img.shields.io/badge/Docker-24.0-blue)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-purple)
 
-## Стек
-- Laravel 12
-- React + Inertia
-- PostgreSQL
-- Docker
-- Vite
+**Middle-Market** — современный интернет-магазин с гибридной архитектурой Laravel + React через Inertia.js. Проект обеспечивает SPA-подобный пользовательский опыт без необходимости создания отдельного API. Корзина автоматически сохраняется при выходе и закрытии вкладки, а затем восстанавливается при входе.
 
-## Функции
-- Каталог товаров
-- Фильтрация, поиск
-- Отзывы (для защиты — можно добавить)
-- Авторизация
-- Корзина на `localStorage`
-- Адаптивный интерфейс
+---
 
-## Запуск
-```bash
-git clone https://github.com/Volkivanv/FullstackFinalProject.git
-cd middle
-cp src/.env.example src/.env
-docker-compose up -d
-docker-compose run --rm artisan migrate --seed
-docker-compose run --rm composer install
-docker-compose run --rm vite npm install
-docker-compose run --rm vite npm run build
+## 🚀 Функционал
 
+- ✅ **Каталог товаров** с пагинацией
+- 🔍 **Поиск и фильтрация** по названию, типу и цене
+- 🛒 **Корзина** с синхронизацией между `localStorage` и базой данных
+- 💾 Автоматическое сохранение корзины:
+    - При выходе из аккаунта
+    - При закрытии вкладки (`navigator.sendBeacon`)
+- 🔁 Восстановление корзины при повторном входе
+- 🖼 **Загрузка изображений** в админке
+- 👨‍💼 **Админ-панель** для управления товарами
+- 🧠 Toast-уведомления при действиях
+- 🐳 Полная сборка через **Docker**
 
-# Интернет-магазин "Middle Market"
+---
 
-## 🚀 Запуск проекта
+## 🛠 Технологии
+
+| Слой            | Технология               |
+| --------------- | ------------------------ |
+| Бэкенд          | Laravel 12               |
+| Фронтенд        | React 18 + Inertia.js    |
+| Стили           | Tailwind CSS             |
+| Сборка          | Vite                     |
+| База данных     | PostgreSQL               |
+| Контейнеризация | Docker + docker-compose  |
+| Авторизация     | Laravel Breeze / Sanctum |
+
+---
+
+## 📦 Установка (через Docker)
 
 1. Склонируйте репозиторий:
-   ```bash
-   git clone https://github.com/Volkivanv/FullstackFinalProject.git
-   cd middle
 
+    ```bash
+    git clone https://github.com/yourname/middle-market.git
+    cd middle-market
 
-# RUN chmod 777 -R storage/
-# RUN chmod 777 -R database/
+    ```
+
+2. Запустите сервисы:
+
+    ```bash
+    docker-compose up -d
+    ```
+
+3. Установите зависимости PHP и Node.js:
+
+    ```bash
+    docker-compose run --rm composer install
+    docker-compose run --rm vite npm install
+    ```
+
+4. Сгенерируйте ключ и выполните миграции:
+
+    ```
+    docker-compose run --rm artisan key:generate
+    docker-compose run --rm artisan migrate --seed
+    ```
+
+5. Создайте ссылку на storage:
+
+    ```
+    docker-compose run --rm artisan storage:link
+    ```
+
+6. Запустите фронтенд:
+
+   ```
+   docker-compose run --rm --service-ports vite
+   ```
+
+7. Откройте в браузере:
+
+http://localhost:8000
