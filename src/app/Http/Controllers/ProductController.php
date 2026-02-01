@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Review;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -61,7 +62,10 @@ class ProductController extends Controller
             'type' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
+            'image' => 'nullable|image|max:2048', // до 2MB
         ]);
+
+        $validated['image'] = $request->file('image')?->store('products', 'public');
 
         Product::create($validated);
 
@@ -94,16 +98,21 @@ class ProductController extends Controller
             'type' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
+            'image' => 'nullable|image|max:2048',
         ]);
 
+        // Если новое изображение — загружаем
+        if ($request->hasFile('image')) {
+            // Удаляем старое
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
+            $validated['image'] = $request->file('image')->store('products', 'public');
+        } else {
+            $validated['image'] = $product->image; // сохраняем старое
+        }
+
         $product->update($validated);
-
-        return redirect()->route('products.index');
-    }
-
-    public function destroy(Product $product)
-    {
-        $product->delete();
 
         return redirect()->route('products.index');
     }

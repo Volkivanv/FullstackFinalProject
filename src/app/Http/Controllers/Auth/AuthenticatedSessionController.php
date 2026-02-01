@@ -33,10 +33,7 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
-        // $user = Auth::user();
 
-        // // Подгружаем корзину из БД
-        // $cart = $user->cart ?? [];
         $cart = $request->input('cart'); // ✅ Теперь = массив
 
         return redirect()

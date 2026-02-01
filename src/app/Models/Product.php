@@ -31,7 +31,9 @@ class Product extends Model
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
 
-    protected $fillable = ['name', 'price', 'description', 'type'];
+    protected $fillable = ['name', 'price', 'description', 'type', 'image',];
+
+    protected $appends = ['image_url'];
 
     public function reviews()
     {
@@ -46,5 +48,10 @@ class Product extends Model
     public function getAverageRatingAttribute()
     {
         return round($this->averageRating(), 1);
+    }
+    // Путь к изображению
+    public function getImageUrlAttribute()
+    {
+        return $this->image ? '/storage/' . $this->image : '/img/default-product.png';
     }
 }

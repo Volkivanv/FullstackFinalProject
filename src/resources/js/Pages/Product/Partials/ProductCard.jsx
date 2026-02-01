@@ -20,9 +20,13 @@ export default function ProductCard({ product }) {
                 {/* Изображение */}
                 <div className="relative overflow-hidden">
                     <img
+                        // src={`/storage/${product.image}`}
                         src={product.image_url}
                         alt={product.name}
                         className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
+                        onError={(e) => {
+                            e.target.src = '/img/default-product.png';
+                        }}
                     />
                 </div>
 
