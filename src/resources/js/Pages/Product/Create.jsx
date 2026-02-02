@@ -80,7 +80,7 @@ export default function Create({ auth }) {
                 )}
 
                 {/* Или отдельное поле */}
-                {!preview && (
+                {/* {!preview && (
                     <div className="mb-4">
                         <input
                             type="file"
@@ -91,7 +91,7 @@ export default function Create({ auth }) {
                         />
                         {errors.image && <div className="error">{errors.image}</div>}
                     </div>
-                )}
+                )} */}
 
                 {/* Название */}
                 <div>
