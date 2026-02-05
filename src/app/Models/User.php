@@ -53,6 +53,8 @@ class User extends Authenticatable
         'role_id',
     ];
 
+    protected $appends = ['is_admin'];
+
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
@@ -93,6 +95,11 @@ class User extends Authenticatable
     }
 
     public function canAssignRoles(): bool
+    {
+        return $this->isAdmin();
+    }
+
+    public function getIsAdminAttribute(): bool
     {
         return $this->isAdmin();
     }

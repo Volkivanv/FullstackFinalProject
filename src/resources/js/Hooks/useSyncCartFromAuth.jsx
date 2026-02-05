@@ -14,7 +14,7 @@ export function useSyncCartFromAuth() {
 
     if (isCartEmpty && Array.isArray(user.cart) && user.cart.length > 0) {
       localStorage.setItem('cart', JSON.stringify(user.cart));
-      console.log('🔄 Корзина восстановлена из БД');
+  //    console.log('🔄 Корзина восстановлена из БД');
 
       // ✅ Показываем toast
       toast.success(`🛒 Восстановлено ${user.cart.length} ${declineQuantity(user.cart.length)} из прошлой сессии`, {

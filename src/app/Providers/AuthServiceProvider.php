@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -26,9 +27,11 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         // 🔐 Определяем Gates (права доступа)
-        Gate::define('access-admin', function ($user) {
-            return $user->isAdmin();
-        });
+        // Gate::define('access-admin', function ($user) {
+        //     return $user->isAdmin();
+        // });
+
+        Gate::define('access-admin', [UserPolicy::class, 'accessAdmin']);
 
         Gate::define('manage-products', function ($user) {
             return $user->canManageProducts() ?? false;

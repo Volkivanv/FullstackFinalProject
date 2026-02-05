@@ -28,20 +28,20 @@ createInertiaApp({
         // 🔹 Только при ПЕРВОМ входе: если localStorage пуст — подгружаем из БД
         if (user) {
             const savedCart = localStorage.getItem('cart');
-            console.log('💾 savedCart:', savedCart);
+      //      console.log('💾 savedCart:', savedCart);
             const isCartEmpty = !savedCart || savedCart === '[]' || savedCart === 'null';
 
             if (isCartEmpty) {
                 if (user.cart && Array.isArray(user.cart) && user.cart.length > 0) {
-                    console.log('☁️ user.cart:', user.cart);
+      //              console.log('☁️ user.cart:', user.cart);
                     localStorage.setItem('cart', JSON.stringify(user.cart));
-                    console.log('📦 Корзина загружена из БД');
+       //             console.log('📦 Корзина загружена из БД');
                 }
             } else {
-                console.log('📦 Корзина из localStorage сохранена', JSON.parse(savedCart));
+     //           console.log('📦 Корзина из localStorage сохранена', JSON.parse(savedCart));
             }
         } else {
-            console.log('Not user!!!');
+    //        console.log('Not user!!!');
         }
 
         // ✅ Добавляем: сохранение при закрытии вкладки
@@ -72,7 +72,7 @@ createInertiaApp({
                             });
                         }
                     } catch (e) {
-                        console.error('❌ Не удалось отправить корзину при закрытии', e);
+              //          console.error('❌ Не удалось отправить корзину при закрытии', e);
                     }
                 }
             };

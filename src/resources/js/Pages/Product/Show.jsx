@@ -71,14 +71,14 @@ export default function Show({ product, reviews, canAddReview, auth }) {
 
                             {/* Кнопки */}
                             <div className="mt-8 flex space-x-4">
-                                {/* {auth?.user?.is_admin && ( */}
+                                {auth?.user?.is_admin && (
                                     <Link
                                         href={`/products/${product.id}/edit`}
                                         className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
                                     >
                                         Редактировать
                                     </Link>
-                                {/* )} */}
+                                )}
                                 <Link
                                     href="/products"
                                     className="px-6 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400"
@@ -133,8 +133,8 @@ export default function Show({ product, reviews, canAddReview, auth }) {
                                     href={link.url}
                                     dangerouslySetInnerHTML={{ __html: link.label }}
                                     className={`px-3 py-1 text-sm rounded ${link.active
-                                            ? 'bg-indigo-600 text-white'
-                                            : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                                        ? 'bg-indigo-600 text-white'
+                                        : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
                                         } ${!link.url ? 'pointer-events-none opacity-50' : ''}`}
                                 />
                             ))}

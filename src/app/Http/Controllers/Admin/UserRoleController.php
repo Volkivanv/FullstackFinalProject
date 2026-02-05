@@ -14,7 +14,7 @@ class UserRoleController extends Controller
     //
     public function index()
     {
-        Gate::authorize('access-admin');
+        Gate::authorize('assign-roles');
 
         $users = User::with('role')->select('id', 'name', 'email', 'role_id')->get();
         $roles = Role::orderBy('name')->get(); // все роли
@@ -27,7 +27,7 @@ class UserRoleController extends Controller
 
     public function update(Request $request, User $user)
     {
-      //  Gate::authorize('access-admin');
+        Gate::authorize('assign-roles');
 
         $request->validate([
             'role_id' => ['required', 'exists:roles,id'],

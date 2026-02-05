@@ -13,12 +13,12 @@ export function useCart() {
         if (saved) {
             try {
                 const parsed = JSON.parse(saved);
-                console.log('✅ parsed from localStorage:', parsed);
+    //            console.log('✅ parsed from localStorage:', parsed);
                 if (Array.isArray(parsed)) {
                     setItems(parsed);
                 }
             } catch (e) {
-                console.error('Failed to parse cart', e);
+    //            console.error('Failed to parse cart', e);
                 localStorage.removeItem('cart');
             }
         }
@@ -26,11 +26,11 @@ export function useCart() {
 
     // 🔹 Сохраняем при изменении
     useEffect(() => {
-        console.log('📦 Saving to localStorage:', items);
+  //      console.log('📦 Saving to localStorage:', items);
         try {
             localStorage.setItem('cart', JSON.stringify(items));
         } catch (e) {
-            console.error('Failed to save cart', e);
+ //           console.error('Failed to save cart', e);
         }
     }, [items]);
 

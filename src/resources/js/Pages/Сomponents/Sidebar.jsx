@@ -52,17 +52,19 @@ export default function Sidebar({ onClose, auth }) {
 
     const handleLogout = (e) => {
         e.preventDefault();
-        console.log('📤 Отправка корзины:', items);
+   //     console.log('📤 Отправка корзины:', items);
 
         // ✅ Главное — удалить до отправки
         localStorage.removeItem('cart');
-        console.log('🗑 localStorage.cart удалён');
+   //     console.log('🗑 localStorage.cart удалён');
 
         // Отправляем и переходим
         router.post('/logout', {
             cart: items
         });
     };
+
+    console.log(auth?.user?.is_admin);
 
 
     return (
@@ -148,6 +150,27 @@ export default function Sidebar({ onClose, auth }) {
                                 📝 Зарегистрироваться
                             </Link>
                         </div>
+                    )}
+
+                    {/* 🔐 Админ-панель */}
+                    {auth?.user?.is_admin && (
+                        <>
+                            <a
+                                href={route('products.index')}
+                                className="block px-6 py-3 hover:bg-red-600 font-medium border-t border-gray-700"
+                                onClick={onClose}
+                            >
+                                🛠 Управлять товарами
+                            </a>
+
+                            <a
+                                href={route('admin.users.index')}
+                                className="block px-6 py-3 hover:bg-red-600 font-medium"
+                                onClick={onClose}
+                            >
+                                👥 Управлять правами
+                            </a>
+                        </>
                     )}
                 </ul>
             </nav>
