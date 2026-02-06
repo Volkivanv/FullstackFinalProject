@@ -64,7 +64,7 @@ export default function Sidebar({ onClose, auth }) {
         });
     };
 
-    console.log(auth?.user?.is_admin);
+  //  console.log(auth?.user?.is_admin);
 
 
     return (

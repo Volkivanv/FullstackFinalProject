@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 
 class UserRoleController extends Controller
 {
@@ -23,6 +24,22 @@ class UserRoleController extends Controller
             'users' => $users,
             'roles' => $roles,
         ]);
+    }
+
+    public function destroy(User $user)
+    {
+        Gate::authorize('assign-roles');
+
+        if ($user->id === auth()->id()) {
+            return back()->withErrors(['delete' => 'Нельзя удалить свой аккаунт.']);
+        }
+
+        DB::transaction(function () use ($user) {
+            $user->reviews()->delete();
+            $user->delete();
+        });
+
+        return redirect()->route('admin.users.index')->with('success', "Пользователь «{$user->name}» удалён.");
     }
 
     public function update(Request $request, User $user)

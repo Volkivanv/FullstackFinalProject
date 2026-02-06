@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin/users', [UserRoleController::class, 'index'])->name('admin.users.index')->middleware('can:access-admin');
     Route::put('/admin/users/{user}', [UserRoleController::class, 'update'])->name('admin.users.update')->middleware('can:access-admin');
+    Route::delete('/admin/users/{user}', [UserRoleController::class, 'destroy'])->name('admin.users.destroy')->middleware('can:access-admin');
 });
 
 // // ✅ Группа для админки — только для тех, кто может назначать роли

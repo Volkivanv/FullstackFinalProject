@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Role;
+use App\Models\Review;
 //API scaffolding installed. Please add the [Laravel\Sanctum\HasApiTokens] trait to your User model.
 
 
@@ -65,6 +66,12 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    // 🔗 Связь с отзывами
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 
     // 🔐 Проверка по имени роли
